@@ -5,9 +5,9 @@ import { Button } from "@material-ui/core"
 
 import { Box, Container, Typography } from "@material-ui/core"
 
-const IndexPage = () => (
+const AboutPage = () => (
   <>
-    <SEO title="Home" />
+    <SEO title="About" />
     <Box
       width="100vw"
       height="100vh "
@@ -18,14 +18,14 @@ const IndexPage = () => (
     >
       <Container maxWidth="sm">
         <Typography variant="h3" paragraph>
-          Home
+          About
         </Typography>
-        <Button component={Link} to="/about" variant="outlined">
-          About page
+        <Button component={Link} to="/" variant="outlined">
+          Home page
         </Button>
       </Container>
     </Box>
   </>
 )
 
-export default IndexPage
+export default AboutPage

@@ -1,18 +1,11 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
-import React from "react"
-import PropTypes from "prop-types"
+import React, { useEffect } from "react"
+import { connect } from "react-redux"
 import { useStaticQuery, graphql } from "gatsby"
+import { CssBaseline, useMediaQuery, useTheme } from "@material-ui/core"
+import { AnimatePresence, motion } from "framer-motion"
+import { setIsMobile } from "../state/actions"
 
-import Header from "./header"
-import "./layout.css"
-
-const Layout = ({ children }) => {
+const Layout = ({ location, dispatch, children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -23,31 +16,50 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), { noSsr: true })
+
+  useEffect(() => {
+    dispatch(setIsMobile(isMobile))
+  }, [isMobile])
+
+  const duration = 0.5
+
+  const variants = {
+    initial: {
+      opacity: 0,
+    },
+    enter: {
+      opacity: 1,
+      transition: {
+        duration,
+        delay: duration,
+        when: "beforeChildren",
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration,
+      },
+    },
+  }
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer style={{
-          marginTop: `2rem`
-        }}>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
+      <CssBaseline />
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          key={location.pathname}
+          variants={variants}
+          initial="initial"
+          animate="enter"
+          exit="exit"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
     </>
   )
 }
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
-export default Layout
+export default connect()(Layout)
