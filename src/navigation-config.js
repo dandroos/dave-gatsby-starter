@@ -1,4 +1,11 @@
-import { Facebook, Twitter, Instagram } from "mdi-material-ui"
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Phone,
+  FacebookMessenger,
+  Whatsapp,
+} from "mdi-material-ui"
 
 export const internal = [
   {
@@ -34,5 +41,23 @@ export const external = [
     label: "Instagram",
     link: "https://instagram.com",
     icon: Instagram,
+  },
+]
+
+export const contact = [
+  {
+    label: "Call",
+    link: "tel:123456789",
+    icon: Phone,
+  },
+  {
+    label: "WhatsApp",
+    link: "https://wa.me/123456789",
+    icon: Whatsapp,
+  },
+  {
+    label: "Messenger",
+    link: "https:/m.me/temp",
+    icon: FacebookMessenger,
   },
 ]

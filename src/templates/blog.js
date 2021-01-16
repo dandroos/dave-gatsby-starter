@@ -1,0 +1,121 @@
+import React, { useEffect } from "react"
+import { graphql, navigate } from "gatsby"
+import Img from "gatsby-image"
+import { connect } from "react-redux"
+import {
+  Container,
+  Box,
+  Button,
+  Typography,
+  Card,
+  Divider,
+  CardHeader,
+  CardActions,
+  CardContent,
+  CardActionArea,
+} from "@material-ui/core"
+import { Pagination } from "@material-ui/lab"
+import moment from "moment"
+
+const Index = props => {
+  const { currentPage, numPages } = props.pageContext
+  const articles = props.data.allFile.edges.map(i => {
+    const article = i.node.childMarkdownRemark
+    return {
+      id: article.id,
+      title: article.frontmatter.title,
+      body: article.html,
+      image: article.frontmatter.featured_image.childImageSharp.fluid,
+      date: article.frontmatter.date,
+      slug: article.fields.slug,
+      excerpt: article.excerpt,
+    }
+  })
+  const handleClick = (e, v) => {
+    if (v === 1) {
+      navigate(`/blog`)
+    } else {
+      navigate(`/blog/${v}`)
+    }
+  }
+  return (
+    <Container maxWidth="md">
+      <Pagination
+        count={numPages}
+        page={currentPage}
+        onChange={handleClick}
+        style={{
+          marginBottom: ".35rem",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      />
+      <Box my={2}>
+        {articles.map((i, ind) => (
+          <Box mb={articles.length === ind + 1 ? 0 : 2}>
+            <Card>
+              <CardActionArea onClick={() => navigate(`/blog${i.slug}`)}>
+                <Img style={{ cursor: "pointer" }} fluid={i.image} />
+                <CardContent style={{ textAlign: "center" }}>
+                  <Typography variant="h3">{i.title}</Typography>
+                  <Typography variant="overline">
+                    {moment(i.date).format("Do MMMM YYYY")}
+                  </Typography>
+                  <Divider variant="middle" />
+                  <Typography style={{ marginTop: 10 }} align="justify">
+                    {i.excerpt}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Box>
+        ))}
+      </Box>
+      <Pagination
+        count={numPages}
+        page={currentPage}
+        onChange={handleClick}
+        style={{ display: "flex", justifyContent: "center" }}
+      />
+    </Container>
+  )
+}
+
+export const homeQuery = graphql`
+  query homeQuery($skip: Int!, $limit: Int!) {
+    allFile(
+      limit: $limit
+      skip: $skip
+      filter: { sourceInstanceName: { eq: "blogs" }, extension: { eq: "md" } }
+      sort: { fields: childMarkdownRemark___frontmatter___date, order: DESC }
+    ) {
+      edges {
+        node {
+          childMarkdownRemark {
+            fields {
+              slug
+            }
+            id
+            frontmatter {
+              title
+              featured_image {
+                childImageSharp {
+                  fluid(maxHeight: 545, maxWidth: 845, quality: 80) {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
+              date
+            }
+            html
+            excerpt(pruneLength: 400)
+          }
+        }
+      }
+    }
+  }
+`
+
+const mapStateToProps = state => ({})
+
+export default connect(mapStateToProps)(Index)

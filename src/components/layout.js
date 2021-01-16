@@ -1,9 +1,21 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { useStaticQuery, graphql } from "gatsby"
-import { CssBaseline, useMediaQuery, useTheme } from "@material-ui/core"
+import {
+  Box,
+  Toolbar,
+  CssBaseline,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core"
 import { AnimatePresence, motion } from "framer-motion"
-import { setIsMobile } from "../state/actions"
+import { setAtTop, setIsMobile } from "../state/actions"
+
+import NavBar from "./NavBar"
+import MobileMenu from "./MobileMenu"
+import BottomMobileMenu from "./BottomMobileMenu"
+import Footer from "./Footer"
+import PrivacyPolicy from "./PrivacyPolicy"
 
 const Layout = ({ location, dispatch, children }) => {
   const data = useStaticQuery(graphql`
@@ -23,6 +35,11 @@ const Layout = ({ location, dispatch, children }) => {
     dispatch(setIsMobile(isMobile))
   }, [isMobile])
 
+  useEffect(() => {
+    document.addEventListener("scroll", () => {
+      dispatch(setAtTop(window.scrollY === 0))
+    })
+  }, [])
   const duration = 0.5
 
   const variants = {
@@ -44,9 +61,17 @@ const Layout = ({ location, dispatch, children }) => {
       },
     },
   }
+
+  useEffect(() => {
+    console.log(location)
+  }, [location.pathname])
   return (
     <>
       <CssBaseline />
+      <NavBar />
+      <MobileMenu />
+      <BottomMobileMenu />
+      <PrivacyPolicy />
       <AnimatePresence exitBeforeEnter>
         <motion.div
           key={location.pathname}
@@ -55,9 +80,12 @@ const Layout = ({ location, dispatch, children }) => {
           animate="enter"
           exit="exit"
         >
-          {children}
+          <Toolbar />
+          <Box my={2}>{children}</Box>
+          {location.pathname !== "/" && <Footer />}
         </motion.div>
       </AnimatePresence>
+      {isMobile && <Toolbar />}
     </>
   )
 }

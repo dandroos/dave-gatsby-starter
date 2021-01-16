@@ -1,0 +1,32 @@
+backend:
+  name: git-gateway
+  branch: master
+media_folder: src/images
+site_url: https://fuertedavestarter.netlify.app
+logo_url: https://fuertedavestarter.netlify.app/netlifycmslogo.png
+collections:
+- name: articles
+  label: Articles
+  label_singular: Article
+  folder: articles
+  create: true
+  editor:
+    preview: false
+  slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+  path: '{{slug}}/index'
+  media_folder: ''
+  summary: "TITLE: {{title}}, POSTED: {{day}}/{{month}}/{{year}}"
+  fields:
+    - label: Title
+      name: title
+      widget: string
+    - label: Featured Image
+      name: featured_image
+      widget: image
+      default: /images/default_article.jpg
+    - label: Date
+      name: date
+      widget: datetime
+    - label: Body
+      name: body
+      widget: markdown

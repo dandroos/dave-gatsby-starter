@@ -2,8 +2,8 @@ import React from "react"
 import { Link } from "gatsby"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
-
 import { Box, Container, Typography } from "@material-ui/core"
+import { Information } from "mdi-material-ui"
 
 const IndexPage = () => (
   <>
@@ -15,13 +15,20 @@ const IndexPage = () => (
       justifyContent="center"
       alignItems="center"
       align="center"
+      position="fixed"
+      top={0}
     >
       <Container maxWidth="sm">
         <Typography variant="h3" paragraph>
-          Home
+          Headline goes here
         </Typography>
-        <Button component={Link} to="/about" variant="outlined">
-          About page
+        <Button
+          startIcon={<Information />}
+          component={Link}
+          to="/about"
+          variant="outlined"
+        >
+          More info
         </Button>
       </Container>
     </Box>
