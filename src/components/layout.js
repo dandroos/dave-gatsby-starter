@@ -62,41 +62,40 @@ const Layout = ({ location, dispatch, children }) => {
     },
   }
 
-  useEffect(() => {
-    console.log(location)
-  }, [location.pathname])
   return (
-    <>
-      <CssBaseline />
-      <NavBar />
-      <MobileMenu />
-      <BottomMobileMenu />
-      <PrivacyPolicy />
-      <AnimatePresence exitBeforeEnter>
-        <motion.div
-          key={location.pathname}
-          variants={variants}
-          initial="initial"
-          animate="enter"
-          exit="exit"
-        >
-          <Box
-            py={2}
-            minHeight="100vh"
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
+    location && (
+      <>
+        <CssBaseline />
+        <NavBar />
+        <MobileMenu />
+        <BottomMobileMenu />
+        <PrivacyPolicy />
+        <AnimatePresence exitBeforeEnter>
+          <motion.div
+            key={location.pathname}
+            variants={variants}
+            initial="initial"
+            animate="enter"
+            exit="exit"
           >
-            <Box>
-              {location.pathname !== "/" && <Toolbar />}
-              {children}
+            <Box
+              py={2}
+              minHeight="100vh"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <Box>
+                {location.pathname !== "/" && <Toolbar />}
+                {children}
+              </Box>
+              {location.pathname !== "/" && <Footer />}
             </Box>
-            {location.pathname !== "/" && <Footer />}
-          </Box>
-        </motion.div>
-      </AnimatePresence>
-      {isMobile && location.pathname !== "/" && <Toolbar />}
-    </>
+          </motion.div>
+        </AnimatePresence>
+        {isMobile && location.pathname !== "/" && <Toolbar />}
+      </>
+    )
   )
 }
 
