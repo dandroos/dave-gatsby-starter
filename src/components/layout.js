@@ -80,12 +80,22 @@ const Layout = ({ location, dispatch, children }) => {
           animate="enter"
           exit="exit"
         >
-          <Toolbar />
-          <Box my={2}>{children}</Box>
-          {location.pathname !== "/" && <Footer />}
+          <Box
+            py={2}
+            minHeight="100vh"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Box>
+              {location.pathname !== "/" && <Toolbar />}
+              {children}
+            </Box>
+            {location.pathname !== "/" && <Footer />}
+          </Box>
         </motion.div>
       </AnimatePresence>
-      {isMobile && <Toolbar />}
+      {isMobile && location.pathname !== "/" && <Toolbar />}
     </>
   )
 }

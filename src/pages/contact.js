@@ -88,7 +88,7 @@ const ContactPage = () => {
       <Container>
         <Typography>You can contact me via the following methods...</Typography>
         <Box my={2}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             {contact.map(i => (
               <Grid item xs={4}>
                 <Button
@@ -114,7 +114,7 @@ const ContactPage = () => {
           data-netlify-honeypot="bot-field"
           onSubmit={handleSubmit}
         >
-          <Grid container spacing={2} alignContent="space-around">
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth

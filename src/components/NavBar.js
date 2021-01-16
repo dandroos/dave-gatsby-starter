@@ -1,5 +1,5 @@
 import React from "react"
-import { navigate, Link, useStaticQuery } from "gatsby"
+import { graphql, navigate, Link, useStaticQuery } from "gatsby"
 import { connect } from "react-redux"
 import {
   AppBar,
@@ -25,7 +25,10 @@ const NavBar = ({ dispatch, atTop, isMobile }) => {
   `)
   return (
     <AppBar color={atTop ? "transparent" : "primary"}>
-      <Toolbar>
+      <Toolbar
+        variant={atTop ? "regular" : "dense"}
+        style={{ transition: "all .5s" }}
+      >
         <Typography
           variant="h5"
           variantMapping={{ h5: "h1" }}

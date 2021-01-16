@@ -3,7 +3,7 @@ import { Box, Typography } from "@material-ui/core"
 
 const FooterSection = ({ title, align, children }) => {
   return (
-    <Box align={align}>
+    <Box align={align ? align : "center"}>
       {title && (
         <Typography variant="h4" paragraph>
           {title}

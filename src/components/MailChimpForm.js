@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
+import { connect } from "react-redux"
 import { Box, TextField, Button, Snackbar } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
+import ReactHtmlParser from "react-html-parser"
 
-const MailChimpForm = ({ status, message, onValidated }) => {
+const MailChimpForm = ({ isMobile, status, message, onValidated }) => {
   const [email, setEmail] = useState("")
 
   const handleChange = e => {
@@ -46,7 +48,11 @@ const MailChimpForm = ({ status, message, onValidated }) => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="flex-end">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent={isMobile ? "center" : "flex-end"}
+      >
         <TextField
           type="email"
           name="email"
@@ -61,14 +67,18 @@ const MailChimpForm = ({ status, message, onValidated }) => {
       <Snackbar
         open={toast.open}
         autoHideDuration={5000}
-        onClose={() => setToast({ open: false, msg: "", severity: "success" })}
+        onClose={() => setToast({ ...toast, open: false })}
       >
         <Alert variant="filled" severity={toast.severity}>
-          {toast.msg}
+          {toast.msg.replace(/\<a.*\<\/.*a>/gi, "")}
         </Alert>
       </Snackbar>
     </>
   )
 }
 
-export default MailChimpForm
+const mapStateToProps = state => ({
+  isMobile: state.isMobile,
+})
+
+export default connect(mapStateToProps)(MailChimpForm)
