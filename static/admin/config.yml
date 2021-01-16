@@ -5,10 +5,10 @@ media_folder: src/images
 site_url: https://fuertedavestarter.netlify.app
 logo_url: https://fuertedavestarter.netlify.app/netlifycmslogo.png
 collections:
-- name: articles
-  label: Articles
-  label_singular: Article
-  folder: articles
+- name: blogs 
+  label: Blogs
+  label_singular: Blog
+  folder: blogs
   create: true
   editor:
     preview: false
