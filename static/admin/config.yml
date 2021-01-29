@@ -1,10 +1,75 @@
 backend:
   name: git-gateway
   branch: master
-media_folder: src/images
+media_folder: content/images
 site_url: https://fuertedavestarter.netlify.app
 logo_url: https://fuertedavestarter.netlify.app/netlifycmslogo.png
 collections:
+- name: admin
+  label: Admin
+  files:
+    - label: Contact and social
+      name: contact_and_social 
+      file: "content/contact-and-social.md"
+      editor:
+        preview: false
+      fields:
+        - { label: "Phone number", name: phone, widget: string }
+        - { label: "Email address", name: email, widget: string }
+        - { label: "Facebook username", name: facebook, widget: string }
+        - { label: "Twitter", name: twitter, widget: string }
+        - { label: "Instagram", name: instagram, widget: string }
+        - { label: "Address", name: address, widget: string }
+- name: static_content
+  label: Static content
+  files:
+    - label: "Style"
+      name: "style"
+      editor:
+        preview: false
+      file: "content/style.md"
+      fields:
+        - { label: "Primary color", name: primary, widget: string }
+        - { label: "Secondary color", name: secondary, widget: string }
+        - { label: "Dark mode", name: dark, widget: boolean }
+    - label: "Hero page"
+      name: "hero_page"
+      editor:
+        preview: false
+      file: "content/hero.md"
+      fields:
+        - { label: "Hero background image", name: hero_image, widget: image }
+        - { label: "Heading", name: hero_heading, widget: string }
+        - { label: "Subheading", name: hero_subheading, widget: string }
+        - { label: "Button text", name: hero_btn, widget: string }
+    - label: "About page"
+      name: "about_page"
+      editor:
+        preview: false
+      file: "content/about.md"
+      fields:
+        - { label: "Main image", name: about_image, widget: image }
+        - { label: "Heading", name: about_heading, widget: string }
+        - { label: "Main text", name: body, widget: markdown }
+    - label: "Blog page"
+      name: "blog_page"
+      editor:
+        preview: false
+      file: "content/blog.md"
+      fields:
+        - { label: "Heading", name: blog_heading, widget: string }
+        - { label: "Blog introduction text", name: body, widget: markdown }
+    - label: "Contact page"
+      name: "contact_page"
+      editor:
+        preview: false
+      file: "content/contact_page.md"
+      fields:
+        - { label: "Contact buttons intro text", name: contact_btns_intro, widget: string }
+        - { label: "Contact form intro text", name: contact_form_intro, widget: string }
+        - { label: "Contact form status text: Sending", name: contact_form_sending, widget: string }
+        - { label: "Contact form status text: Sent", name: contact_form_success, widget: string }
+        - { label: "Contact form status text: Error", name: contact_form_error, widget: string }
 - name: blogs 
   label: Blogs
   label_singular: Blog

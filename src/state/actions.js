@@ -3,6 +3,8 @@ import {
   SET_SHOW_MOBILE_MENU,
   SET_AT_TOP,
   SET_SHOW_PRIVACY_POLICY,
+  SET_SHARER_PROPS,
+  SET_LOCATION,
 } from "./types"
 
 export const setIsMobile = payload => ({
@@ -22,5 +24,15 @@ export const setAtTop = payload => ({
 
 export const setShowPrivacyPolicy = payload => ({
   type: SET_SHOW_PRIVACY_POLICY,
+  payload,
+})
+
+export const setSharerProps = payload => ({
+  type: SET_SHARER_PROPS,
+  payload,
+})
+
+export const setLocation = payload => ({
+  type: SET_LOCATION,
   payload,
 })

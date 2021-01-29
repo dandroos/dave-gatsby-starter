@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { connect } from "react-redux"
 import {
-  useTheme,
+  Toolbar,
   Button,
   Container,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
   Box,
   Typography,
+  Link as MLink,
+  Breadcrumbs,
+  Divider,
 } from "@material-ui/core"
-import { Comment } from "mdi-material-ui"
+import { Comment, Share } from "mdi-material-ui"
 import { Link, graphql } from "gatsby"
 import { CommentCount, DiscussionEmbed } from "disqus-react"
 import moment from "moment"
+import SEO from "../components/seo"
+import { setSharerProps } from "../state/actions"
 
 const Article = props => {
-  const theme = useTheme()
   const { article } = props.data
 
   const [showComments, setShowComments] = useState(false)
@@ -28,39 +27,49 @@ const Article = props => {
     title: article.frontmatter.title,
     identifier: article.id,
   }
-  const handleClick = e => {
-    /*
-    switch (e.currentTarget.id) {
-      case "share":
-        return props.dispatch(
-          setPopup({
-            visible: true,
-            href: window.location.href,
-            title: document.title,
-          })
-        )
-      default:
-        return
-    }
-    */
-  }
 
   return (
     <>
+      <SEO title={article.frontmatter.title} />
+      <Toolbar />
       <Container maxWidth="md">
-        <Box>
-          <Box align="center">
+        <Box py={2}>
+          <Box>
+            <Breadcrumbs>
+              <MLink color="inherit" component={Link} to="/blog">
+                Blog
+              </MLink>
+              <Typography color="textPrimary">
+                {article.frontmatter.title}
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="h2">{article.frontmatter.title}</Typography>
-            <Typography variant="overline">
+
+            <Box>
+              <Button
+                variant="text"
+                size="small"
+                onClick={() =>
+                  props.dispatch(
+                    setSharerProps({
+                      visible: true,
+                      title: document.title,
+                      href: window.location.href,
+                    })
+                  )
+                }
+                startIcon={<Share />}
+              >
+                Share
+              </Button>
+            </Box>
+
+            <Typography variant="overline" display="block">
               {moment(article.frontmatter.date).format("Do MMM YYYY")}
             </Typography>
           </Box>
+          <Divider />
           <Typography dangerouslySetInnerHTML={{ __html: article.html }} />
-          <Box align="center">
-            <Button component={Link} to="/blog" color="inherit">
-              Back
-            </Button>
-          </Box>
           <Box my={3}>
             <Button
               fullWidth
@@ -121,5 +130,4 @@ export const pageQuery = graphql`
   }
 `
 
-const mapStateToProps = state => ({})
-export default connect(mapStateToProps)(Article)
+export default connect()(Article)

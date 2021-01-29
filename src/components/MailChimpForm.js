@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { Box, TextField, Button, Snackbar } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import ReactHtmlParser from "react-html-parser"
+import { Mailbox } from "mdi-material-ui"
 
 const MailChimpForm = ({ isMobile, status, message, onValidated }) => {
   const [email, setEmail] = useState("")
@@ -44,6 +44,7 @@ const MailChimpForm = ({ isMobile, status, message, onValidated }) => {
       })
       setEmail("")
     }
+    //eslint-disable-next-line
   }, [status])
 
   return (
@@ -55,13 +56,20 @@ const MailChimpForm = ({ isMobile, status, message, onValidated }) => {
       >
         <TextField
           type="email"
+          color="secondary"
           name="email"
+          InputProps={{ style: { color: "white" } }}
           onChange={handleChange}
           value={email}
           size="small"
+          placeholder="your@email.com"
         />
-        <Button onClick={submit} style={{ marginLeft: 5 }}>
-          Submit
+        <Button
+          onClick={submit}
+          startIcon={<Mailbox />}
+          style={{ marginLeft: 5 }}
+        >
+          Join
         </Button>
       </Box>
       <Snackbar
@@ -70,7 +78,7 @@ const MailChimpForm = ({ isMobile, status, message, onValidated }) => {
         onClose={() => setToast({ ...toast, open: false })}
       >
         <Alert variant="filled" severity={toast.severity}>
-          {toast.msg.replace(/\<a.*\<\/.*a>/gi, "")}
+          {toast.msg.replace(/<a.*<\/.*a>/gi, "")}
         </Alert>
       </Snackbar>
     </>

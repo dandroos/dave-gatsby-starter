@@ -9,58 +9,126 @@ import {
   Box,
   IconButton,
 } from "@material-ui/core"
-import { Menu } from "mdi-material-ui"
-import { internal, external } from "../navigation-config"
-import { setShowMobileMenu } from "../state/actions"
+import { Menu, Facebook, Twitter, Instagram, Share } from "mdi-material-ui"
+import { internal } from "../navigation-config"
+import { setShowMobileMenu, setSharerProps } from "../state/actions"
+import Img from "gatsby-image"
 
-const NavBar = ({ dispatch, atTop, isMobile }) => {
+const NavBar = ({ dispatch, atTop, isMobile, currentLocation }) => {
   const data = useStaticQuery(graphql`
     {
-      site {
+      title: site {
         siteMetadata {
           title
         }
       }
+      contactDetails: file(
+        name: { eq: "contact-and-social" }
+        sourceInstanceName: { eq: "content" }
+      ) {
+        childMarkdownRemark {
+          frontmatter {
+            facebook
+            twitter
+            instagram
+          }
+        }
+      }
+      logo: file(
+        name: { eq: "gatsby-icon-nav" }
+        sourceInstanceName: { eq: "images" }
+      ) {
+        childImageSharp {
+          fixed(width: 32, height: 32) {
+            ...GatsbyImageSharpFixed
+          }
+        }
+      }
     }
   `)
+
+  const socialLinks = data.contactDetails.childMarkdownRemark.frontmatter
+
   return (
-    <AppBar color={atTop ? "transparent" : "primary"}>
+    <AppBar
+      color={atTop && currentLocation !== "/" ? "transparent" : "primary"}
+      style={
+        currentLocation === "/" ? { backgroundColor: "purple" } : undefined
+      }
+    >
       <Toolbar
         variant={atTop ? "regular" : "dense"}
         style={{ transition: "all .5s" }}
       >
-        <Typography
-          variant="h5"
-          variantMapping={{ h5: "h1" }}
+        <Box
+          display="flex"
+          alignItems="center"
           style={{ cursor: "pointer" }}
           onClick={() => navigate("/")}
         >
-          {data.site.siteMetadata.title}
-        </Typography>
+          <Img
+            fixed={data.logo.childImageSharp.fixed}
+            style={{ marginRight: 10 }}
+          />
+          <Typography variant="h5" variantMapping={{ h5: "h1" }}>
+            {data.title.siteMetadata.title}
+          </Typography>
+        </Box>
         <Box flexGrow={1} />
         {isMobile ? (
           <IconButton
             onClick={() => dispatch(setShowMobileMenu(true))}
+            color="inherit"
             edge="end"
           >
             <Menu />
           </IconButton>
         ) : (
           <Box>
-            {internal.map(i => (
-              <Button variant="text" component={Link} to={i.link}>
+            {internal.map((i, ind) => (
+              <Button
+                key={ind}
+                color="inherit"
+                variant="text"
+                component={Link}
+                to={i.link}
+              >
                 {i.label}
               </Button>
             ))}
             <Box display="inline">
-              {external.map((i, ind) => (
-                <IconButton
-                  edge={ind + 1 === external.length ? "end" : "false"}
-                  onClick={() => window.open(i.link, "_blank")}
-                >
-                  <i.icon />
-                </IconButton>
-              ))}
+              <SocialButton
+                Icon={Facebook}
+                link={`https://facebook.com/${socialLinks.facebook}`}
+              />
+              <SocialButton
+                Icon={Twitter}
+                link={`https://twitter.com/${socialLinks.twitter}`}
+              />
+              <SocialButton
+                Icon={Instagram}
+                link={`https://instagram.com/${socialLinks.instagram}`}
+                end
+              />
+            </Box>
+            <Box display="inline" ml={3}>
+              <Button
+                size="small"
+                onClick={() =>
+                  dispatch(
+                    setSharerProps({
+                      visible: true,
+                      title: document.title,
+                      href: window.location.href,
+                    })
+                  )
+                }
+                startIcon={<Share />}
+                variant="outlined"
+                color="inherit"
+              >
+                Share
+              </Button>
             </Box>
           </Box>
         )}
@@ -69,9 +137,20 @@ const NavBar = ({ dispatch, atTop, isMobile }) => {
   )
 }
 
+const SocialButton = ({ Icon, link, end }) => (
+  <IconButton
+    onClick={() => window.open(link, "_blank")}
+    edge={end ? "end" : false}
+    color="inherit"
+  >
+    <Icon />
+  </IconButton>
+)
+
 const mapStateToProps = state => ({
   atTop: state.atTop,
   isMobile: state.isMobile,
+  currentLocation: state.location,
 })
 
 export default connect(mapStateToProps)(NavBar)

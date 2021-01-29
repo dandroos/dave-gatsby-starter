@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { useStaticQuery, graphql } from "gatsby"
 import {
+  Toolbar,
   Container,
   Grid,
   TextField,
@@ -10,7 +12,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { contact } from "../navigation-config"
+import { Phone, Whatsapp, FacebookMessenger } from "mdi-material-ui"
+import SEO from "../components/seo"
 
 const useStyles = makeStyles(theme => ({
   iconButtonLabel: {
@@ -21,6 +24,41 @@ const useStyles = makeStyles(theme => ({
 
 const ContactPage = () => {
   const classes = useStyles()
+
+  const data = useStaticQuery(graphql`
+    {
+      contact_and_social: file(
+        name: { eq: "contact-and-social" }
+        sourceInstanceName: { eq: "content" }
+      ) {
+        childMarkdownRemark {
+          frontmatter {
+            phone
+            facebook
+          }
+        }
+      }
+      contact_page: file(
+        name: { eq: "contact_page" }
+        sourceInstanceName: { eq: "content" }
+      ) {
+        childMarkdownRemark {
+          frontmatter {
+            contact_heading
+            contact_btns_intro
+            contact_form_intro
+            contact_form_error
+            contact_form_sending
+            contact_form_success
+          }
+        }
+      }
+    }
+  `)
+
+  const contactDetails = data.contact_and_social.childMarkdownRemark.frontmatter
+  const contactPageText = data.contact_page.childMarkdownRemark.frontmatter
+
   const [fields, setFields] = useState({
     name: "",
     email: "",
@@ -62,7 +100,7 @@ const ContactPage = () => {
       .then(() => {
         setToast({
           open: true,
-          msg: "Thank you. Your message was sent successfully.",
+          msg: contactPageText.contact_form_success,
           severity: "success",
         })
         setFields({
@@ -76,96 +114,126 @@ const ContactPage = () => {
       .catch(() =>
         setToast({
           open: true,
-          msg:
-            "Sorry. There was a problem sending your message. Please try again in a few moments or use an alternative contact method.",
+          msg: contactPageText.contact_form_error,
           severity: "error",
         })
       )
   }
 
+  const ContactMethod = ({ label, Icon, link }) => (
+    <Button
+      classes={{ label: classes.iconButtonLabel }}
+      style={{ padding: 30 }}
+      fullWidth
+      onClick={() => window.open(link, "_blank")}
+    >
+      <Icon style={{ fontSize: 50 }} />
+      <Typography variant="caption">{label}</Typography>
+    </Button>
+  )
+
   return (
     <>
+      <SEO title="Contact" />
+      <Toolbar />
       <Container>
-        <Typography>You can contact me via the following methods...</Typography>
-        <Box my={2}>
-          <Grid container spacing={1}>
-            {contact.map(i => (
+        <Box py={2}>
+          <Typography variant="h2" paragraph>
+            {contactPageText.contact_heading}
+          </Typography>
+          <Typography>{contactPageText.contact_btns_intro}</Typography>
+          <Box my={2}>
+            <Grid container spacing={1}>
               <Grid item xs={4}>
-                <Button
-                  classes={{ label: classes.iconButtonLabel }}
-                  style={{ padding: 30 }}
-                  fullWidth
-                >
-                  <i.icon style={{ fontSize: 50 }} />
-                  <Typography variant="caption">{i.label}</Typography>
-                </Button>
+                <ContactMethod
+                  label="Call"
+                  Icon={Phone}
+                  link={`tel:${contactDetails.phone.replace(/ /g, "")}`}
+                />
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Typography paragraph>
-          You can also send me a message using the form below.
-        </Typography>
-        <form
-          name="contact"
-          action="#"
-          method="POST"
-          data-netlify="true"
-          data-netlify-honeypot="bot-field"
-          onSubmit={handleSubmit}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                label="Name"
-                required
-                id="name"
-                onChange={handleChange}
-                value={fields.name}
-              />
+              <Grid item xs={4}>
+                <ContactMethod
+                  label="WhatsApp"
+                  Icon={Whatsapp}
+                  link={`https://wa.me/${contactDetails.phone.replace(
+                    / /g,
+                    ""
+                  )}`}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <ContactMethod
+                  label="Messenger"
+                  Icon={FacebookMessenger}
+                  link={`https:/m.me/${contactDetails.facebook}`}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                label="Email"
-                required
-                id="email"
-                type="email"
-                onChange={handleChange}
-                value={fields.email}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                label="Phone"
-                id="tel"
-                onChange={handleChange}
-                value={fields.tel}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                required
-                label="Message"
-                id="msg"
-                onChange={handleChange}
-                value={fields.msg}
-              />
-            </Grid>
-          </Grid>
-          <Box mt={2} align="center">
-            <Button fullWidth>Send</Button>
           </Box>
-        </form>
+          <Typography paragraph>
+            {contactPageText.contact_form_intro}
+          </Typography>
+          <form
+            name="contact"
+            action="#"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  label="Name"
+                  required
+                  id="name"
+                  onChange={handleChange}
+                  value={fields.name}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  required
+                  id="email"
+                  type="email"
+                  onChange={handleChange}
+                  value={fields.email}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  id="tel"
+                  onChange={handleChange}
+                  value={fields.tel}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  multiline
+                  required
+                  label="Message"
+                  id="msg"
+                  onChange={handleChange}
+                  value={fields.msg}
+                />
+              </Grid>
+            </Grid>
+            <Box mt={2} align="center">
+              <Button fullWidth>Send</Button>
+            </Box>
+          </form>
+        </Box>
       </Container>
       <Snackbar
         open={toast.open}
         autoHideDuration={5000}
-        onClose={() => setToast({ open: false, msg: "", severity: "success" })}
+        onClose={() => setToast({ ...toast, open: false })}
       >
         <Alert variant="filled" severity={toast.severity}>
           {toast.msg}

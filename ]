@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { Helmet } from "react-helmet"
 import {
   Box,
+  Toolbar,
   CssBaseline,
   useMediaQuery,
   useTheme,
@@ -12,8 +13,7 @@ import {
 } from "@material-ui/core"
 import { useStaticQuery, graphql } from "gatsby"
 import { AnimatePresence, motion } from "framer-motion"
-import { setLocation, setAtTop, setIsMobile } from "../state/actions"
-import color from "color"
+import { setAtTop, setIsMobile } from "../state/actions"
 
 import NavBar from "./NavBar"
 import MobileMenu from "./MobileMenu"
@@ -38,10 +38,6 @@ const Layout = ({ location, dispatch, children }) => {
   `)
 
   const { dark, primary, secondary } = data.file.childMarkdownRemark.frontmatter
-
-  const bgColor1 = color(`#${secondary}`).lighten(0.6)
-  const bgColor2 = color(`#${secondary}`).lighten(0.8)
-
   const theme = responsiveFontSizes(
     createMuiTheme({
       palette: {
@@ -59,11 +55,9 @@ const Layout = ({ location, dispatch, children }) => {
       overrides: {
         MuiAppBar: {
           colorTransparent: {
+            backgroundColor: "white",
             boxShadow: "none",
           },
-        },
-        MuiBottomNavigationAction: {
-          label: { textTransform: "uppercase" },
         },
       },
       props: {
@@ -77,9 +71,6 @@ const Layout = ({ location, dispatch, children }) => {
       },
     })
   )
-  useEffect(() => {
-    setLocation(location.pathname)
-  }, [location])
   const myTheme = useTheme()
   const isMobile = useMediaQuery(myTheme.breakpoints.down("sm"), {
     noSsr: true,
@@ -134,17 +125,6 @@ const Layout = ({ location, dispatch, children }) => {
         <MobileMenu />
         <BottomMobileMenu />
         <PrivacyPolicy />
-        <Box
-          position="fixed"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          zIndex={-100}
-          style={{
-            background: `linear-gradient(to top left, ${bgColor1}, ${bgColor2})`,
-          }}
-        />
         <AnimatePresence exitBeforeEnter>
           <motion.div
             key={location.pathname}
@@ -164,7 +144,7 @@ const Layout = ({ location, dispatch, children }) => {
             </Box>
           </motion.div>
         </AnimatePresence>
-        {isMobile && location.pathname !== "/" && <Box height={56} />}
+        {isMobile && location.pathname !== "/" && <Toolbar />}
       </ThemeProvider>
     )
   )

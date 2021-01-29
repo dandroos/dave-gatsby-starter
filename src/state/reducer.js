@@ -3,13 +3,21 @@ import {
   SET_SHOW_MOBILE_MENU,
   SET_AT_TOP,
   SET_SHOW_PRIVACY_POLICY,
+  SET_SHARER_PROPS,
+  SET_LOCATION,
 } from "./types"
 
 const initialState = {
+  location: null,
   isMobile: null,
   showMobileMenu: false,
   atTop: true,
   showPrivacyPolicy: false,
+  sharerProps: {
+    visible: false,
+    href: "",
+    title: "",
+  },
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -27,6 +35,12 @@ export default (state = initialState, { type, payload }) => {
       break
     case SET_SHOW_PRIVACY_POLICY:
       newState.showPrivacyPolicy = payload
+      break
+    case SET_SHARER_PROPS:
+      newState.sharerProps = payload
+      break
+    case SET_LOCATION:
+      newState.location = payload
       break
     default:
       break

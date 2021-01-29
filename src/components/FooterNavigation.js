@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { Link } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
 import {
   Button,
   Typography,
@@ -8,48 +8,93 @@ import {
   Box,
   IconButton,
 } from "@material-ui/core"
-import { internal, external } from "../navigation-config"
+import { Facebook, Twitter, Instagram } from "mdi-material-ui"
+import { internal } from "../navigation-config"
 
 const FooterNavigation = ({ isMobile }) => {
+  const data = useStaticQuery(graphql`
+    {
+      file(
+        name: { eq: "contact-and-social" }
+        sourceInstanceName: { eq: "content" }
+      ) {
+        childMarkdownRemark {
+          frontmatter {
+            facebook
+            twitter
+            instagram
+          }
+        }
+      }
+    }
+  `)
+
+  const socialLinks = data.file.childMarkdownRemark.frontmatter
+
   return isMobile ? (
     <Box>
       {internal.map((i, ind) => (
-        <>
+        <Box key={ind} display="inline">
           <Button size="small" variant="text" component={Link} to={i.link}>
             {i.label}
           </Button>
           <Typography display="inline">
             {ind + 1 !== internal.length ? "|" : null}
           </Typography>
-        </>
+        </Box>
       ))}
       <Box>
-        {external.map(i => (
-          <IconButton onClick={() => window.open(i.link, "_blank")}>
-            <i.icon />
-          </IconButton>
-        ))}
+        <SocialButton
+          Icon={Facebook}
+          link={`https://facebook.com/${socialLinks.facebook}`}
+        />
+        <SocialButton
+          Icon={Twitter}
+          link={`https://twitter.com/${socialLinks.twitter}`}
+        />
+        <SocialButton
+          Icon={Instagram}
+          link={`https://instagram.com/${socialLinks.instagram}`}
+        />
       </Box>
     </Box>
   ) : (
     <Box>
-      {internal.map(i => (
-        <Typography variant="button" style={{ cursor: "pointer" }} paragraph>
-          <MLink component={Link} to={i.link} color="inherit">
+      {internal.map((i, ind) => (
+        <Typography
+          key={ind}
+          variant="button"
+          style={{ cursor: "pointer" }}
+          paragraph
+        >
+          <MLink component={Link} to={i.link} color="secondary">
             {i.label}
           </MLink>
         </Typography>
       ))}
       <Box>
-        {external.map(i => (
-          <IconButton onClick={() => window.open(i.link, "_blank")}>
-            <i.icon />
-          </IconButton>
-        ))}
+        <SocialButton
+          Icon={Facebook}
+          link={`https://facebook.com/${socialLinks.facebook}`}
+        />
+        <SocialButton
+          Icon={Twitter}
+          link={`https://twitter.com/${socialLinks.twitter}`}
+        />
+        <SocialButton
+          Icon={Instagram}
+          link={`https://instagram.com/${socialLinks.instagram}`}
+        />
       </Box>
     </Box>
   )
 }
+
+const SocialButton = ({ Icon, link }) => (
+  <IconButton color="inherit" onClick={() => window.open(link, "_blank")}>
+    <Icon />
+  </IconButton>
+)
 
 const mapStateToProps = state => ({
   isMobile: state.isMobile,

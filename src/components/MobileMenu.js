@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
+import { useStaticQuery, graphql, Link } from "gatsby"
 import { connect } from "react-redux"
 import {
   Dialog,
@@ -10,12 +10,30 @@ import {
   IconButton,
   Fab,
   Slide,
+  Button,
 } from "@material-ui/core"
-import { Close } from "mdi-material-ui"
-import { internal, external } from "../navigation-config"
-import { setShowMobileMenu } from "../state/actions"
+import { Facebook, Twitter, Instagram, Close, Share } from "mdi-material-ui"
+import { internal } from "../navigation-config"
+import { setShowMobileMenu, setSharerProps } from "../state/actions"
 
 const MobileMenu = ({ dispatch, isOpen }) => {
+  const data = useStaticQuery(graphql`
+    {
+      file(
+        name: { eq: "contact-and-social" }
+        sourceInstanceName: { eq: "content" }
+      ) {
+        childMarkdownRemark {
+          frontmatter {
+            facebook
+            twitter
+            instagram
+          }
+        }
+      }
+    }
+  `)
+  const socialLinks = data.file.childMarkdownRemark.frontmatter
   const handleClose = () => {
     dispatch(setShowMobileMenu(false))
   }
@@ -41,26 +59,63 @@ const MobileMenu = ({ dispatch, isOpen }) => {
           <Close />
         </Fab>
         <List>
-          {internal.map(i => (
-            <ListItem component={Link} to={i.link} button onClick={handleClose}>
+          {internal.map((i, ind) => (
+            <ListItem
+              key={ind}
+              component={Link}
+              to={i.link}
+              button
+              onClick={handleClose}
+            >
               <ListItemText
                 primary={i.label}
-                primaryTypographyProps={{ align: "center" }}
+                primaryTypographyProps={{ variant: "button", align: "center" }}
               />
             </ListItem>
           ))}
         </List>
         <Box mt={2}>
-          {external.map(i => (
-            <IconButton onClick={() => window.open(i.link, "_blank")}>
-              <i.icon />
-            </IconButton>
-          ))}
+          <SocialButton
+            Icon={Facebook}
+            link={`https://facebook.com/${socialLinks.facebook}`}
+          />
+          <SocialButton
+            Icon={Twitter}
+            link={`https://twitter.com/${socialLinks.twitter}`}
+          />
+          <SocialButton
+            Icon={Instagram}
+            link={`https://instagram.com/${socialLinks.instagram}`}
+          />
+        </Box>
+        <Box mt={2}>
+          <Button
+            onClick={() =>
+              dispatch(
+                setSharerProps({
+                  visible: true,
+                  title: document.title,
+                  href: window.location.href,
+                })
+              )
+            }
+            startIcon={<Share />}
+            variant="outlined"
+            color="inherit"
+          >
+            Share
+          </Button>
         </Box>
       </Box>
     </Dialog>
   )
 }
+
+const SocialButton = ({ Icon, link }) => (
+  <IconButton onClick={() => window.open(link, "_blank")}>
+    <Icon />
+  </IconButton>
+)
 
 const mapStateToProps = state => ({
   isOpen: state.showMobileMenu,

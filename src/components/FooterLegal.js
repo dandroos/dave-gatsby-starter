@@ -16,9 +16,9 @@ const FooterLegal = ({ dispatch }) => {
       <Typography variant="caption">
         View our{" "}
         <Link
-          component="button"
+          color="secondary"
           onClick={() => dispatch(setShowPrivacyPolicy(true))}
-          style={{ verticalAlign: "inherit" }}
+          style={{ cursor: "pointer" }}
         >
           privacy policy
         </Link>

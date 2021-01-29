@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { Box, Grid, Container } from "@material-ui/core"
+import { Box, Grid, Container, useTheme } from "@material-ui/core"
 import FooterSection from "./FooterSection"
 import FooterNavigation from "./FooterNavigation"
 import FooterContact from "./FooterContact"
@@ -8,8 +8,15 @@ import FooterMailingList from "./FooterMailingList"
 import FooterLegal from "./FooterLegal"
 
 const Footer = ({ isMobile }) => {
+  const theme = useTheme()
   return (
-    <Box mt={12}>
+    <Box
+      mt={7}
+      py={4}
+      bgcolor={theme.palette.primary.main}
+      color={theme.palette.primary.contrastText}
+      boxShadow={1}
+    >
       {isMobile ? (
         <>
           <Box align="center">
@@ -35,7 +42,7 @@ const Footer = ({ isMobile }) => {
         </>
       ) : (
         <Container>
-          <Grid container style={{ textAlign: "center" }}>
+          <Grid container alignItems="center" style={{ textAlign: "center" }}>
             <Grid item xs={4}>
               <FooterSection title="Contact" align="left">
                 <FooterContact />

@@ -5,7 +5,6 @@ import Layout from "./src/components/layout"
 export const wrapRootElement = wrapWithProvider
 
 export const wrapPageElement = ({ element, props }) => {
-  console.log(props)
   return <Layout {...props}>{element}</Layout>
 }
 

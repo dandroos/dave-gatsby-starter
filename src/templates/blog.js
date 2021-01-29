@@ -1,25 +1,27 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql, navigate } from "gatsby"
 import Img from "gatsby-image"
-import { connect } from "react-redux"
 import {
+  Toolbar,
   Container,
   Box,
-  Button,
   Typography,
   Card,
   Divider,
-  CardHeader,
-  CardActions,
   CardContent,
   CardActionArea,
+  CardActions,
+  Button,
 } from "@material-ui/core"
 import { Pagination } from "@material-ui/lab"
 import moment from "moment"
+import SEO from "../components/seo"
+import { Post } from "mdi-material-ui"
+import ReactMarkdown from "react-markdown"
 
 const Index = props => {
   const { currentPage, numPages } = props.pageContext
-  const articles = props.data.allFile.edges.map(i => {
+  const articles = props.data.blogs.edges.map(i => {
     const article = i.node.childMarkdownRemark
     return {
       id: article.id,
@@ -38,52 +40,81 @@ const Index = props => {
       navigate(`/blog/${v}`)
     }
   }
+
   return (
-    <Container maxWidth="md">
-      <Pagination
-        count={numPages}
-        page={currentPage}
-        onChange={handleClick}
-        style={{
-          marginBottom: ".35rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      />
-      <Box my={2}>
-        {articles.map((i, ind) => (
-          <Box mb={articles.length === ind + 1 ? 0 : 2}>
-            <Card>
-              <CardActionArea onClick={() => navigate(`/blog${i.slug}`)}>
-                <Img style={{ cursor: "pointer" }} fluid={i.image} />
-                <CardContent style={{ textAlign: "center" }}>
-                  <Typography variant="h3">{i.title}</Typography>
-                  <Typography variant="overline">
-                    {moment(i.date).format("Do MMMM YYYY")}
-                  </Typography>
-                  <Divider variant="middle" />
-                  <Typography style={{ marginTop: 10 }} align="justify">
-                    {i.excerpt}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+    <>
+      <SEO title="Blog" />
+      <Toolbar />
+      <Container maxWidth="md">
+        <Box py={2}>
+          <Typography variant="h2" paragraph>
+            {props.data.static.childMarkdownRemark.frontmatter.blog_heading}
+          </Typography>
+          <ReactMarkdown
+            renderers={{
+              paragraph: ({ node }) => {
+                const { value } = node.children[0]
+                return <Typography paragraph>{value}</Typography>
+              },
+            }}
+          >
+            {props.data.static.childMarkdownRemark.rawMarkdownBody}
+          </ReactMarkdown>
+          <Pagination
+            count={numPages}
+            page={currentPage}
+            onChange={handleClick}
+            style={{
+              marginBottom: ".35rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          />
+          <Box my={2}>
+            {articles.map((i, ind) => (
+              <Box key={ind} mb={articles.length === ind + 1 ? 0 : 2}>
+                <Card raised>
+                  <CardActionArea onClick={() => navigate(`/blog${i.slug}`)}>
+                    <Img style={{ cursor: "pointer" }} fluid={i.image} />
+                    <CardContent>
+                      <Typography variant="h3">{i.title}</Typography>
+                      <Typography variant="overline">
+                        {moment(i.date).format("Do MMMM YYYY")}
+                      </Typography>
+                      <Divider />
+                      <Typography style={{ marginTop: 10 }} align="justify">
+                        {i.excerpt}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions disableSpacing>
+                    <Button
+                      fullWidth
+                      onClick={() => navigate(`/blog${i.slug}`)}
+                      startIcon={<Post />}
+                    >
+                      Read more
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Box>
+            ))}
           </Box>
-        ))}
-      </Box>
-      <Pagination
-        count={numPages}
-        page={currentPage}
-        onChange={handleClick}
-        style={{ display: "flex", justifyContent: "center" }}
-      />
-    </Container>
+        </Box>
+        <Pagination
+          count={numPages}
+          page={currentPage}
+          onChange={handleClick}
+          style={{ display: "flex", justifyContent: "center" }}
+        />
+      </Container>
+    </>
   )
 }
 
 export const homeQuery = graphql`
   query homeQuery($skip: Int!, $limit: Int!) {
-    allFile(
+    blogs: allFile(
       limit: $limit
       skip: $skip
       filter: { sourceInstanceName: { eq: "blogs" }, extension: { eq: "md" } }
@@ -113,9 +144,19 @@ export const homeQuery = graphql`
         }
       }
     }
+    static: file(
+      name: { eq: "blog" }
+      sourceInstanceName: { eq: "content" }
+      extension: { eq: "md" }
+    ) {
+      childMarkdownRemark {
+        rawMarkdownBody
+        frontmatter {
+          blog_heading
+        }
+      }
+    }
   }
 `
 
-const mapStateToProps = state => ({})
-
-export default connect(mapStateToProps)(Index)
+export default Index

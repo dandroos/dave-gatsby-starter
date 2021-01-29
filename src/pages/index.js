@@ -1,39 +1,109 @@
 import React from "react"
-import { Link } from "gatsby"
+import { connect } from "react-redux"
+import { useStaticQuery, graphql, Link } from "gatsby"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
-import { Box, Container, Typography } from "@material-ui/core"
+import {
+  Box,
+  Container,
+  Typography,
+  Toolbar,
+  useTheme,
+} from "@material-ui/core"
 import { Information } from "mdi-material-ui"
+import BackgroundImage from "gatsby-background-image"
 
-const IndexPage = () => (
-  <>
-    <SEO title="Home" />
-    <Box
-      width="100vw"
-      height="100vh "
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      align="center"
-      position="fixed"
-      top={0}
-      left={0}
-    >
-      <Container maxWidth="sm">
-        <Typography variant="h3" paragraph>
-          Headline goes here
-        </Typography>
-        <Button
-          startIcon={<Information />}
-          component={Link}
-          to="/about"
-          variant="outlined"
+const IndexPage = ({ isMobile }) => {
+  const data = useStaticQuery(graphql`
+    {
+      file(name: { eq: "hero" }, sourceInstanceName: { eq: "content" }) {
+        childMarkdownRemark {
+          frontmatter {
+            hero_image {
+              childImageSharp {
+                fluid(maxWidth: 2500, maxHeight: 1500, quality: 80) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
+            hero_heading
+            hero_subheading
+            hero_btn
+          }
+        }
+      }
+    }
+  `)
+  const {
+    hero_heading,
+    hero_subheading,
+    hero_btn,
+  } = data.file.childMarkdownRemark.frontmatter
+
+  const hero_image =
+    data.file.childMarkdownRemark.frontmatter.hero_image.childImageSharp.fluid
+
+  const theme = useTheme()
+  return (
+    <>
+      <SEO title="Home" />
+      <Box
+        display="flex"
+        flexDirection="column"
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}
+        align="center"
+      >
+        <Toolbar />
+        <Box
+          component={BackgroundImage}
+          fluid={hero_image}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: isMobile ? "center" : "left",
+          }}
         >
-          More info
-        </Button>
-      </Container>
-    </Box>
-  </>
-)
+          <Box
+            width="100%"
+            boxShadow={2}
+            mt={15}
+            py={9}
+            style={{
+              background: `linear-gradient(to bottom right, ${theme.palette.primary.main}cc 10%, ${theme.palette.primary.main}77)`,
+            }}
+            color={theme.palette.primary.contrastText}
+          >
+            <Container maxWidth="md">
+              <Typography variant="h3" paragraph>
+                {hero_heading}
+              </Typography>
+              <Typography variant="h5" paragraph>
+                {hero_subheading}
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<Information />}
+                size="large"
+                component={Link}
+                to="/about"
+              >
+                {hero_btn}
+              </Button>
+            </Container>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  )
+}
 
-export default IndexPage
+const mapStateToProps = state => ({
+  isMobile: state.isMobile,
+})
+export default connect(mapStateToProps)(IndexPage)
