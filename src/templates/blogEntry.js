@@ -15,10 +15,11 @@ import { Link, graphql } from "gatsby"
 import { CommentCount, DiscussionEmbed } from "disqus-react"
 import moment from "moment"
 import SEO from "../components/seo"
+import Img from "gatsby-image"
 import { setSharerProps } from "../state/actions"
 
 const Article = props => {
-  const { article } = props.data
+  const { article, og } = props.data
 
   const [showComments, setShowComments] = useState(false)
 
@@ -30,44 +31,48 @@ const Article = props => {
 
   return (
     <>
-      <SEO title={article.frontmatter.title} />
+      <SEO
+        title={article.frontmatter.title}
+        ogImage={og.frontmatter.featured_image.childImageSharp.fixed.src}
+      />
       <Toolbar />
-      <Container maxWidth="md">
-        <Box py={2}>
-          <Box>
-            <Breadcrumbs>
-              <MLink color="inherit" component={Link} to="/blog">
-                Blog
-              </MLink>
-              <Typography color="textPrimary">
-                {article.frontmatter.title}
-              </Typography>
-            </Breadcrumbs>
-            <Typography variant="h2">{article.frontmatter.title}</Typography>
-
-            <Box>
-              <Button
-                variant="text"
-                size="small"
-                onClick={() =>
-                  props.dispatch(
-                    setSharerProps({
-                      visible: true,
-                      title: document.title,
-                      href: window.location.href,
-                    })
-                  )
-                }
-                startIcon={<Share />}
-              >
-                Share
-              </Button>
-            </Box>
-
-            <Typography variant="overline" display="block">
-              {moment(article.frontmatter.date).format("Do MMM YYYY")}
+      <Box py={2}>
+        <Container maxWidth="md">
+          <Breadcrumbs>
+            <MLink color="inherit" component={Link} to="/blog">
+              Blog
+            </MLink>
+            <Typography color="textPrimary">
+              {article.frontmatter.title}
             </Typography>
+          </Breadcrumbs>
+        </Container>
+        <Img fluid={article.frontmatter.featured_image.childImageSharp.fluid} />
+        <Container maxWidth="md">
+          <Typography variant="h2">{article.frontmatter.title}</Typography>
+
+          <Box>
+            <Button
+              variant="text"
+              size="small"
+              onClick={() =>
+                props.dispatch(
+                  setSharerProps({
+                    visible: true,
+                    title: document.title,
+                    href: window.location.href,
+                  })
+                )
+              }
+              startIcon={<Share />}
+            >
+              Share
+            </Button>
           </Box>
+
+          <Typography variant="overline" display="block">
+            {moment(article.frontmatter.date).format("Do MMM YYYY")}
+          </Typography>
           <Divider />
           <Typography dangerouslySetInnerHTML={{ __html: article.html }} />
           <Box my={3}>
@@ -89,8 +94,8 @@ const Article = props => {
               />
             )}
           </Box>
-        </Box>
-      </Container>
+        </Container>
+      </Box>
     </>
   )
 }
@@ -103,7 +108,7 @@ export const pageQuery = graphql`
         date
         featured_image {
           childImageSharp {
-            fluid(maxWidth: 800) {
+            fluid(maxWidth: 2000, maxHeight: 700, quality: 80) {
               ...GatsbyImageSharpFluid
             }
           }

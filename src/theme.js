@@ -1,30 +1,17 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core"
-import { useStaticQuery, graphql } from "gatsby"
-
-const data = useStaticQuery(graphql`
-  {
-    file(name: { eq: "colors" }, sourceInstanceName: { eq: "content" }) {
-      childMarkdownRemark {
-        frontmatter {
-          primary
-          secondary
-        }
-      }
-    }
-  }
-`)
-
-const { primary, secondary } = data.file.childMarkdownRemark.frontmatter
+import { primary, secondary } from "./colors"
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: `#${primary}`,
+      main: primary,
     },
     secondary: {
-      main: `#${secondary}`,
+      main: secondary,
     },
-    type: "dark",
+  },
+  typography: {
+    fontFamily: "EB Garamond",
   },
   overrides: {
     MuiAppBar: {
@@ -32,10 +19,14 @@ const theme = createMuiTheme({
         boxShadow: "none",
       },
     },
+    MuiBottomNavigationAction: {
+      label: { textTransform: "uppercase" },
+    },
   },
   props: {
     MuiButton: {
-      variant: "outlined",
+      variant: "contained",
+      color: "secondary",
     },
     MuiTextField: {
       variant: "outlined",

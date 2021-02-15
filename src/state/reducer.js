@@ -1,4 +1,5 @@
 import {
+  SET_SITE_IS_READY,
   SET_IS_MOBILE,
   SET_SHOW_MOBILE_MENU,
   SET_AT_TOP,
@@ -8,6 +9,7 @@ import {
 } from "./types"
 
 const initialState = {
+  siteIsReady: false,
   location: null,
   isMobile: null,
   showMobileMenu: false,
@@ -24,6 +26,9 @@ export default (state = initialState, { type, payload }) => {
   const newState = Object.assign({}, state)
 
   switch (type) {
+    case SET_SITE_IS_READY:
+      newState.siteIsReady = payload
+      break
     case SET_IS_MOBILE:
       newState.isMobile = payload
       break

@@ -1,11 +1,12 @@
 import React from "react"
+import { connect } from "react-redux"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import SEO from "../components/seo"
 import Img from "gatsby-image"
 import { Box, Container, Typography, Button, Toolbar } from "@material-ui/core"
 import ReactMarkdown from "react-markdown"
 
-const AboutPage = () => {
+const AboutPage = ({ atTop }) => {
   const data = useStaticQuery(graphql`
     {
       file(
@@ -45,7 +46,7 @@ const AboutPage = () => {
   return (
     <>
       <SEO title="About" />
-      <Toolbar />
+      <Toolbar variant={atTop ? "regular" : "dense"} />
       <Img fluid={img} />
       <Box py={2}>
         <Container maxWidth="md">
@@ -63,4 +64,9 @@ const AboutPage = () => {
     </>
   )
 }
-export default AboutPage
+
+const mapStateToProps = state => ({
+  atTop: state.atTop,
+})
+
+export default connect(mapStateToProps)(AboutPage)

@@ -1,4 +1,5 @@
 import {
+  SET_SITE_IS_READY,
   SET_IS_MOBILE,
   SET_SHOW_MOBILE_MENU,
   SET_AT_TOP,
@@ -6,6 +7,11 @@ import {
   SET_SHARER_PROPS,
   SET_LOCATION,
 } from "./types"
+
+export const setSiteIsReady = payload => ({
+  type: SET_SITE_IS_READY,
+  payload,
+})
 
 export const setIsMobile = payload => ({
   type: SET_IS_MOBILE,
