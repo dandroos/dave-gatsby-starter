@@ -35,66 +35,75 @@ const Article = props => {
         title={article.frontmatter.title}
         ogImage={og.frontmatter.featured_image.childImageSharp.fixed.src}
       />
-      <Toolbar />
-      <Box py={2}>
-        <Container maxWidth="md">
-          <Breadcrumbs>
-            <MLink color="inherit" component={Link} to="/blog">
-              Blog
-            </MLink>
-            <Typography color="textPrimary">
-              {article.frontmatter.title}
-            </Typography>
-          </Breadcrumbs>
-        </Container>
-        <Img fluid={article.frontmatter.featured_image.childImageSharp.fluid} />
-        <Container maxWidth="md">
-          <Typography variant="h2">{article.frontmatter.title}</Typography>
+      {props.siteIsReady ? (
+        <>
+          <Toolbar />
+          <Box py={2}>
+            <Container maxWidth="md">
+              <Breadcrumbs>
+                <MLink color="inherit" component={Link} to="/blog">
+                  Blog
+                </MLink>
+                <Typography color="textPrimary">
+                  {article.frontmatter.title}
+                </Typography>
+              </Breadcrumbs>
+            </Container>
+            <Img
+              fluid={article.frontmatter.featured_image.childImageSharp.fluid}
+            />
+            <Container maxWidth="md">
+              <Typography variant="h2">{article.frontmatter.title}</Typography>
 
-          <Button
-            variant="text"
-            color="primary"
-            size="small"
-            onClick={() =>
-              props.dispatch(
-                setSharerProps({
-                  visible: true,
-                  title: document.title,
-                  href: window.location.href,
-                })
-              )
-            }
-            startIcon={<Share />}
-          >
-            Share
-          </Button>
-          <Typography variant="overline" display="block">
-            {moment(article.frontmatter.date).format("Do MMMM YYYY")}
-          </Typography>
+              <Button
+                variant="text"
+                color="primary"
+                size="small"
+                onClick={() =>
+                  props.dispatch(
+                    setSharerProps({
+                      visible: true,
+                      title: document.title,
+                      href: window.location.href,
+                    })
+                  )
+                }
+                startIcon={<Share />}
+              >
+                Share
+              </Button>
+              <Typography variant="overline" display="block">
+                {moment(article.frontmatter.date).format("Do MMMM YYYY")}
+              </Typography>
 
-          <Divider />
-          <Typography dangerouslySetInnerHTML={{ __html: article.html }} />
-          <Box my={3}>
-            <Button
-              fullWidth
-              startIcon={<Comment />}
-              onClick={() => setShowComments(!showComments)}
-            >
-              {showComments ? "Hide comments" : "Show comments"} (
-              <CommentCount shortname="gatsby-starter-1" config={disqusConfig}>
-                0 comments
-              </CommentCount>
-              )
-            </Button>
-            {showComments && (
-              <DiscussionEmbed
-                shortname="gatsby-starter-1"
-                config={disqusConfig}
-              />
-            )}
+              <Divider />
+              <Typography dangerouslySetInnerHTML={{ __html: article.html }} />
+              <Box my={3}>
+                <Button
+                  fullWidth
+                  startIcon={<Comment />}
+                  onClick={() => setShowComments(!showComments)}
+                >
+                  {showComments ? "Hide comments" : "Show comments"} (
+                  <CommentCount
+                    shortname="gatsby-starter-1"
+                    config={disqusConfig}
+                  >
+                    0 comments
+                  </CommentCount>
+                  )
+                </Button>
+                {showComments && (
+                  <DiscussionEmbed
+                    shortname="gatsby-starter-1"
+                    config={disqusConfig}
+                  />
+                )}
+              </Box>
+            </Container>
           </Box>
-        </Container>
-      </Box>
+        </>
+      ) : null}
     </>
   )
 }
@@ -134,4 +143,8 @@ export const pageQuery = graphql`
   }
 `
 
-export default connect()(Article)
+const mapStateToProps = state => ({
+  siteIsReady: state.siteIsReady,
+})
+
+export default connect(mapStateToProps)(Article)

@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from "react-redux"
 import { graphql, navigate } from "gatsby"
 import Img from "gatsby-image"
 import {
@@ -44,70 +45,76 @@ const Index = props => {
   return (
     <>
       <SEO title="Blog" />
-      <Toolbar />
-      <Container maxWidth="md">
-        <Box py={2}>
-          <Typography variant="h2" paragraph>
-            {props.data.static.childMarkdownRemark.frontmatter.blog_heading}
-          </Typography>
-          <ReactMarkdown
-            renderers={{
-              paragraph: ({ node }) => {
-                const { value } = node.children[0]
-                return <Typography paragraph>{value}</Typography>
-              },
-            }}
-          >
-            {props.data.static.childMarkdownRemark.rawMarkdownBody}
-          </ReactMarkdown>
-          <Pagination
-            count={numPages}
-            page={currentPage}
-            onChange={handleClick}
-            style={{
-              marginBottom: ".35rem",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          />
-          <Box my={2}>
-            {articles.map((i, ind) => (
-              <Box key={ind} mb={articles.length === ind + 1 ? 0 : 2}>
-                <Card raised>
-                  <CardActionArea onClick={() => navigate(`/blog${i.slug}`)}>
-                    <Img style={{ cursor: "pointer" }} fluid={i.image} />
-                    <CardContent>
-                      <Typography variant="h3">{i.title}</Typography>
-                      <Typography variant="overline">
-                        {moment(i.date).format("Do MMMM YYYY")}
-                      </Typography>
-                      <Divider />
-                      <Typography style={{ marginTop: 10 }} align="justify">
-                        {i.excerpt}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions disableSpacing>
-                    <Button
-                      fullWidth
-                      onClick={() => navigate(`/blog${i.slug}`)}
-                      startIcon={<Post />}
-                    >
-                      Read more
-                    </Button>
-                  </CardActions>
-                </Card>
+      {props.siteIsReady ? (
+        <>
+          <Toolbar />
+          <Container maxWidth="md">
+            <Box py={2}>
+              <Typography variant="h2" paragraph>
+                {props.data.static.childMarkdownRemark.frontmatter.blog_heading}
+              </Typography>
+              <ReactMarkdown
+                renderers={{
+                  paragraph: ({ node }) => {
+                    const { value } = node.children[0]
+                    return <Typography paragraph>{value}</Typography>
+                  },
+                }}
+              >
+                {props.data.static.childMarkdownRemark.rawMarkdownBody}
+              </ReactMarkdown>
+              <Pagination
+                count={numPages}
+                page={currentPage}
+                onChange={handleClick}
+                style={{
+                  marginBottom: ".35rem",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              />
+              <Box my={2}>
+                {articles.map((i, ind) => (
+                  <Box key={ind} mb={articles.length === ind + 1 ? 0 : 2}>
+                    <Card raised>
+                      <CardActionArea
+                        onClick={() => navigate(`/blog${i.slug}`)}
+                      >
+                        <Img style={{ cursor: "pointer" }} fluid={i.image} />
+                        <CardContent>
+                          <Typography variant="h3">{i.title}</Typography>
+                          <Typography variant="overline">
+                            {moment(i.date).format("Do MMMM YYYY")}
+                          </Typography>
+                          <Divider />
+                          <Typography style={{ marginTop: 10 }} align="justify">
+                            {i.excerpt}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions disableSpacing>
+                        <Button
+                          fullWidth
+                          onClick={() => navigate(`/blog${i.slug}`)}
+                          startIcon={<Post />}
+                        >
+                          Read more
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
-        </Box>
-        <Pagination
-          count={numPages}
-          page={currentPage}
-          onChange={handleClick}
-          style={{ display: "flex", justifyContent: "center" }}
-        />
-      </Container>
+            </Box>
+            <Pagination
+              count={numPages}
+              page={currentPage}
+              onChange={handleClick}
+              style={{ display: "flex", justifyContent: "center" }}
+            />
+          </Container>
+        </>
+      ) : null}
     </>
   )
 }
@@ -159,4 +166,8 @@ export const homeQuery = graphql`
   }
 `
 
-export default Index
+const mapStateToProps = state => ({
+  siteIsReady: state.siteIsReady,
+})
+
+export default connect(mapStateToProps)(Index)

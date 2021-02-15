@@ -13,7 +13,7 @@ import {
 import { Information } from "mdi-material-ui"
 import BackgroundImage from "gatsby-background-image"
 
-const IndexPage = ({ isMobile }) => {
+const IndexPage = ({ siteIsReady, isMobile }) => {
   const data = useStaticQuery(graphql`
     {
       file(name: { eq: "hero" }, sourceInstanceName: { eq: "content" }) {
@@ -47,63 +47,66 @@ const IndexPage = ({ isMobile }) => {
   return (
     <>
       <SEO title="Home" />
-      <Box
-        display="flex"
-        flexDirection="column"
-        style={{
-          width: "100vw",
-          height: "100vh",
-        }}
-        align="center"
-      >
-        <Toolbar />
+      {siteIsReady ? (
         <Box
-          component={BackgroundImage}
-          fluid={hero_image}
+          display="flex"
+          flexDirection="column"
           style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: isMobile ? "center" : "left",
+            width: "100vw",
+            height: "100vh",
           }}
+          align="center"
         >
+          <Toolbar />
           <Box
-            width="100%"
-            boxShadow={2}
-            mt={15}
-            py={9}
+            component={BackgroundImage}
+            fluid={hero_image}
             style={{
-              background: `linear-gradient(to bottom right, ${theme.palette.primary.main}cc 10%, ${theme.palette.primary.main}77)`,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: isMobile ? "center" : "left",
             }}
-            color={theme.palette.primary.contrastText}
           >
-            <Container maxWidth="md">
-              <Typography variant="h3" paragraph>
-                {hero_heading}
-              </Typography>
-              <Typography variant="h5" paragraph>
-                {hero_subheading}
-              </Typography>
-              <Button
-                variant="contained"
-                startIcon={<Information />}
-                size="large"
-                component={Link}
-                to="/about"
-              >
-                {hero_btn}
-              </Button>
-            </Container>
+            <Box
+              width="100%"
+              boxShadow={2}
+              mt={15}
+              py={9}
+              style={{
+                background: `linear-gradient(to bottom right, ${theme.palette.primary.main}cc 10%, ${theme.palette.primary.main}77)`,
+              }}
+              color={theme.palette.primary.contrastText}
+            >
+              <Container maxWidth="md">
+                <Typography variant="h3" paragraph>
+                  {hero_heading}
+                </Typography>
+                <Typography variant="h5" paragraph>
+                  {hero_subheading}
+                </Typography>
+                <Button
+                  variant="contained"
+                  startIcon={<Information />}
+                  size="large"
+                  component={Link}
+                  to="/about"
+                >
+                  {hero_btn}
+                </Button>
+              </Container>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      ) : null}
     </>
   )
 }
 
 const mapStateToProps = state => ({
   isMobile: state.isMobile,
+  siteIsReady: state.siteIsReady,
 })
 export default connect(mapStateToProps)(IndexPage)

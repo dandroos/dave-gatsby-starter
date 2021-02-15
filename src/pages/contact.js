@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { connect } from "react-redux"
 import { useStaticQuery, graphql } from "gatsby"
 import {
   Toolbar,
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ContactPage = () => {
+const ContactPage = ({ siteIsReady }) => {
   const classes = useStyles()
 
   const data = useStaticQuery(graphql`
@@ -135,112 +136,120 @@ const ContactPage = () => {
   return (
     <>
       <SEO title="Contact" />
-      <Toolbar />
-      <Container>
-        <Box py={2}>
-          <Typography variant="h2" paragraph>
-            {contactPageText.contact_heading}
-          </Typography>
-          <Typography>{contactPageText.contact_btns_intro}</Typography>
-          <Box my={2}>
-            <Grid container spacing={1}>
-              <Grid item xs={4}>
-                <ContactMethod
-                  label="Call"
-                  Icon={Phone}
-                  link={`tel:${contactDetails.phone.replace(/ /g, "")}`}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <ContactMethod
-                  label="WhatsApp"
-                  Icon={Whatsapp}
-                  link={`https://wa.me/${contactDetails.phone.replace(
-                    / /g,
-                    ""
-                  )}`}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <ContactMethod
-                  label="Messenger"
-                  Icon={FacebookMessenger}
-                  link={`https:/m.me/${contactDetails.facebook}`}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Typography paragraph>
-            {contactPageText.contact_form_intro}
-          </Typography>
-          <form
-            name="contact"
-            action="#"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            onSubmit={handleSubmit}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  required
-                  id="name"
-                  onChange={handleChange}
-                  value={fields.name}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  required
-                  id="email"
-                  type="email"
-                  onChange={handleChange}
-                  value={fields.email}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Phone"
-                  id="tel"
-                  onChange={handleChange}
-                  value={fields.tel}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  required
-                  label="Message"
-                  id="msg"
-                  onChange={handleChange}
-                  value={fields.msg}
-                />
-              </Grid>
-            </Grid>
-            <Box mt={2} align="center">
-              <Button fullWidth>Send</Button>
+      {siteIsReady ? (
+        <>
+          <Toolbar />
+          <Container>
+            <Box py={2}>
+              <Typography variant="h2" paragraph>
+                {contactPageText.contact_heading}
+              </Typography>
+              <Typography>{contactPageText.contact_btns_intro}</Typography>
+              <Box my={2}>
+                <Grid container spacing={1}>
+                  <Grid item xs={4}>
+                    <ContactMethod
+                      label="Call"
+                      Icon={Phone}
+                      link={`tel:${contactDetails.phone.replace(/ /g, "")}`}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <ContactMethod
+                      label="WhatsApp"
+                      Icon={Whatsapp}
+                      link={`https://wa.me/${contactDetails.phone.replace(
+                        / /g,
+                        ""
+                      )}`}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <ContactMethod
+                      label="Messenger"
+                      Icon={FacebookMessenger}
+                      link={`https:/m.me/${contactDetails.facebook}`}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Typography paragraph>
+                {contactPageText.contact_form_intro}
+              </Typography>
+              <form
+                name="contact"
+                action="#"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      fullWidth
+                      label="Name"
+                      required
+                      id="name"
+                      onChange={handleChange}
+                      value={fields.name}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      required
+                      id="email"
+                      type="email"
+                      onChange={handleChange}
+                      value={fields.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      fullWidth
+                      label="Phone"
+                      id="tel"
+                      onChange={handleChange}
+                      value={fields.tel}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      required
+                      label="Message"
+                      id="msg"
+                      onChange={handleChange}
+                      value={fields.msg}
+                    />
+                  </Grid>
+                </Grid>
+                <Box mt={2} align="center">
+                  <Button fullWidth>Send</Button>
+                </Box>
+              </form>
             </Box>
-          </form>
-        </Box>
-      </Container>
-      <Snackbar
-        open={toast.open}
-        autoHideDuration={5000}
-        onClose={() => setToast({ ...toast, open: false })}
-      >
-        <Alert variant="filled" severity={toast.severity}>
-          {toast.msg}
-        </Alert>
-      </Snackbar>
+          </Container>
+          <Snackbar
+            open={toast.open}
+            autoHideDuration={5000}
+            onClose={() => setToast({ ...toast, open: false })}
+          >
+            <Alert variant="filled" severity={toast.severity}>
+              {toast.msg}
+            </Alert>
+          </Snackbar>
+        </>
+      ) : null}
     </>
   )
 }
 
-export default ContactPage
+const mapStateToProps = state => ({
+  siteIsReady: state.siteIsReady,
+})
+
+export default connect(mapStateToProps)(ContactPage)

@@ -74,46 +74,42 @@ const Layout = ({ location, dispatch, children, siteIsReady }) => {
 
   return (
     <>
-      {siteIsReady ? (
-        <>
-          <Sharer />
-          <NavBar />
-          <MobileMenu />
-          <BottomMobileMenu />
-          <PrivacyPolicy />
-          <Box
-            position="fixed"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            zIndex={-100}
-            style={{
-              background: `linear-gradient(to top left, ${bgColor1}, ${bgColor2})`,
-              position: "fixed",
-            }}
-          />
-          <AnimatePresence exitBeforeEnter>
-            <motion.div
-              key={location.pathname}
-              variants={variants}
-              initial="initial"
-              animate="enter"
-              exit="exit"
-              style={{
-                minHeight: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box>{children}</Box>
-              {location.pathname !== "/" && <Footer />}
-            </motion.div>
-          </AnimatePresence>
-          {isMobile && location.pathname !== "/" && <Box height={56} />}
-        </>
-      ) : null}
+      <Sharer />
+      <NavBar />
+      <MobileMenu />
+      <BottomMobileMenu />
+      <PrivacyPolicy />
+      <Box
+        position="fixed"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        zIndex={-100}
+        style={{
+          background: `linear-gradient(to top left, ${bgColor1}, ${bgColor2})`,
+          position: "fixed",
+        }}
+      />
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          key={location.pathname}
+          variants={variants}
+          initial="initial"
+          animate="enter"
+          exit="exit"
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>{children}</Box>
+          {location.pathname !== "/" && <Footer />}
+        </motion.div>
+      </AnimatePresence>
+      {isMobile && location.pathname !== "/" && <Box height={56} />}
     </>
   )
 }

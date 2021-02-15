@@ -6,7 +6,7 @@ import Img from "gatsby-image"
 import { Box, Container, Typography, Button, Toolbar } from "@material-ui/core"
 import ReactMarkdown from "react-markdown"
 
-const AboutPage = ({ atTop }) => {
+const AboutPage = ({ siteIsReady, atTop }) => {
   const data = useStaticQuery(graphql`
     {
       file(
@@ -46,27 +46,32 @@ const AboutPage = ({ atTop }) => {
   return (
     <>
       <SEO title="About" />
-      <Toolbar variant={atTop ? "regular" : "dense"} />
-      <Img fluid={img} />
-      <Box py={2}>
-        <Container maxWidth="md">
-          <Typography variant="h2" paragraph>
-            {heading}
-          </Typography>
-          <ReactMarkdown renderers={renderers}>{body}</ReactMarkdown>
-          <Box align="center">
-            <Button component={Link} to="/contact">
-              Link to contact
-            </Button>
+      {siteIsReady ? (
+        <>
+          <Toolbar variant={atTop ? "regular" : "dense"} />
+          <Img fluid={img} />
+          <Box py={2}>
+            <Container maxWidth="md">
+              <Typography variant="h2" paragraph>
+                {heading}
+              </Typography>
+              <ReactMarkdown renderers={renderers}>{body}</ReactMarkdown>
+              <Box align="center">
+                <Button component={Link} to="/contact">
+                  Link to contact
+                </Button>
+              </Box>
+            </Container>
           </Box>
-        </Container>
-      </Box>
+        </>
+      ) : null}
     </>
   )
 }
 
 const mapStateToProps = state => ({
   atTop: state.atTop,
+  siteIsReady: state.siteIsReady,
 })
 
 export default connect(mapStateToProps)(AboutPage)
