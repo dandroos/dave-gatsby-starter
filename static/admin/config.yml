@@ -2,8 +2,7 @@ backend:
   name: git-gateway
   branch: master
 media_folder: content/images
-site_url: https://fuertedavestarter.netlify.app
-logo_url: https://fuertedavestarter.netlify.app/netlifycmslogo.png
+site_url: https://dandroos-starter.netlify.app
 collections:
 - name: admin
   label: Admin
@@ -23,15 +22,6 @@ collections:
 - name: static_content
   label: Static content
   files:
-    - label: "Style"
-      name: "style"
-      editor:
-        preview: false
-      file: "content/style.md"
-      fields:
-        - { label: "Primary color", name: primary, widget: string }
-        - { label: "Secondary color", name: secondary, widget: string }
-        - { label: "Dark mode", name: dark, widget: boolean }
     - label: "Hero page"
       name: "hero_page"
       editor:
@@ -70,6 +60,13 @@ collections:
         - { label: "Contact form status text: Sending", name: contact_form_sending, widget: string }
         - { label: "Contact form status text: Sent", name: contact_form_success, widget: string }
         - { label: "Contact form status text: Error", name: contact_form_error, widget: string }
+    - label: "Privacy policy"
+      name: "privacy_policy"
+      editor:
+        preview: false
+      file: "content/privacy-policy.md"
+      fields:
+        - { label: Body, name: body, widget: markdown}
 - name: blogs 
   label: Blogs
   label_singular: Blog

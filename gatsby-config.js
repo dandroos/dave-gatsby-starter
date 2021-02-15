@@ -2,10 +2,10 @@ const { primary, secondary } = require("./src/colors")
 
 module.exports = {
   siteMetadata: {
-    title: `David's Starter`,
+    title: `Dandroos' Starter`,
     description: `A basic boilerplate starter with Redux and Material-UI`,
     author: `@gatsbyjs`,
-    url: `https://dave-starter.com`,
+    url: `https://dandroos-starter.netlify.app`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -54,7 +54,7 @@ module.exports = {
         name: `gatsby-starter-default`,
         short_name: `starter`,
         start_url: `/`,
-        background_color: secondary,
+        background_color: "#FAFAFA",
         theme_color: primary,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.

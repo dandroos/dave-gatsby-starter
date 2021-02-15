@@ -51,28 +51,27 @@ const Article = props => {
         <Container maxWidth="md">
           <Typography variant="h2">{article.frontmatter.title}</Typography>
 
-          <Box>
-            <Button
-              variant="text"
-              size="small"
-              onClick={() =>
-                props.dispatch(
-                  setSharerProps({
-                    visible: true,
-                    title: document.title,
-                    href: window.location.href,
-                  })
-                )
-              }
-              startIcon={<Share />}
-            >
-              Share
-            </Button>
-          </Box>
-
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            onClick={() =>
+              props.dispatch(
+                setSharerProps({
+                  visible: true,
+                  title: document.title,
+                  href: window.location.href,
+                })
+              )
+            }
+            startIcon={<Share />}
+          >
+            Share
+          </Button>
           <Typography variant="overline" display="block">
-            {moment(article.frontmatter.date).format("Do MMM YYYY")}
+            {moment(article.frontmatter.date).format("Do MMMM YYYY")}
           </Typography>
+
           <Divider />
           <Typography dangerouslySetInnerHTML={{ __html: article.html }} />
           <Box my={3}>

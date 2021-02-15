@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { connect } from "react-redux"
-import { Helmet } from "react-helmet"
 import { Box, useMediaQuery, useTheme } from "@material-ui/core"
 import { AnimatePresence, motion } from "framer-motion"
 import {
@@ -75,13 +74,6 @@ const Layout = ({ location, dispatch, children, siteIsReady }) => {
 
   return (
     <>
-      <Helmet>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap"
-          rel="stylesheet"
-        />
-      </Helmet>
       {siteIsReady ? (
         <>
           <Sharer />
