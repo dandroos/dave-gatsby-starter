@@ -108,7 +108,7 @@ const ContactPage = ({ siteIsReady }) => {
           name: "",
           email: "",
           phone: "",
-          message: "",
+          msg: "",
         })
         //set message})
       })
@@ -189,6 +189,7 @@ const ContactPage = ({ siteIsReady }) => {
                     <TextField
                       fullWidth
                       label="Name"
+                      name="name"
                       required
                       id="name"
                       onChange={handleChange}
@@ -199,6 +200,7 @@ const ContactPage = ({ siteIsReady }) => {
                     <TextField
                       fullWidth
                       label="Email"
+                      name="email"
                       required
                       id="email"
                       type="email"
@@ -210,6 +212,7 @@ const ContactPage = ({ siteIsReady }) => {
                     <TextField
                       fullWidth
                       label="Phone"
+                      name="phone"
                       id="tel"
                       onChange={handleChange}
                       value={fields.tel}
@@ -221,6 +224,7 @@ const ContactPage = ({ siteIsReady }) => {
                       multiline
                       required
                       label="Message"
+                      name="message"
                       id="msg"
                       onChange={handleChange}
                       value={fields.msg}
