@@ -64,12 +64,12 @@ const ContactPage = ({ siteIsReady }) => {
     name: "",
     email: "",
     phone: "",
-    msg: "",
+    message: "",
   })
 
   const [toast, setToast] = useState({
     open: false,
-    message: "",
+    msg: "",
     severity: "success",
   })
 
@@ -110,7 +110,6 @@ const ContactPage = ({ siteIsReady }) => {
           phone: "",
           message: "",
         })
-        //set message})
       })
       .catch(() =>
         setToast({
