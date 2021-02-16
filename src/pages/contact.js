@@ -228,7 +228,9 @@ const ContactPage = ({ siteIsReady }) => {
                   </Grid>
                 </Grid>
                 <Box mt={2} align="center">
-                  <Button fullWidth>Send</Button>
+                  <Button component="button" type="submit" fullWidth>
+                    Send
+                  </Button>
                 </Box>
               </form>
             </Box>
