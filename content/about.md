@@ -1,6 +1,7 @@
 ---
 about_image: ./images/about.jpg
 about_heading: About me
+about_btn: Get in touch!
 ---
 Sit accusantium repudiandae et itaque voluptas. Sint repellat rerum repellendus inventore quo! Culpa error culpa optio nulla nam Repellat laborum nisi laborum ab iusto Praesentium laboriosam reprehenderit officia deserunt iste est distinctio totam iste harum nihil odio Unde ex accusamus itaque dolorum officiis Ut amet accusamus velit itaque tempora? Blanditiis dolorem eaque libero dolorum facere? Libero iusto vitae ea architecto impedit nemo libero Sit aliquam numquam expedita quaerat laborum ipsam dolore quidem. Aut tempore dolores quibusdam iure dignissimos in quas. Placeat quia ad est maiores illo. Molestiae natus repudiandae dolore quia temporibus.
 

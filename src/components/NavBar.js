@@ -14,7 +14,13 @@ import { internal } from "../navigation-config"
 import { setShowMobileMenu, setSharerProps } from "../state/actions"
 import Img from "gatsby-image"
 
-const NavBar = ({ dispatch, atTop, isMobile, currentLocation }) => {
+const NavBar = ({
+  dispatch,
+  atTop,
+  isMobile,
+  currentLocation,
+  siteIsReady,
+}) => {
   const data = useStaticQuery(graphql`
     {
       title: site {
@@ -49,7 +55,7 @@ const NavBar = ({ dispatch, atTop, isMobile, currentLocation }) => {
 
   const socialLinks = data.contactDetails.childMarkdownRemark.frontmatter
 
-  return (
+  return siteIsReady ? (
     <AppBar
       color={atTop && currentLocation !== "/" ? "transparent" : "primary"}
       style={
@@ -134,7 +140,7 @@ const NavBar = ({ dispatch, atTop, isMobile, currentLocation }) => {
         )}
       </Toolbar>
     </AppBar>
-  )
+  ) : null
 }
 
 const SocialButton = ({ Icon, link, end }) => (
@@ -151,6 +157,7 @@ const mapStateToProps = state => ({
   atTop: state.atTop,
   isMobile: state.isMobile,
   currentLocation: state.location,
+  siteIsReady: state.siteIsReady,
 })
 
 export default connect(mapStateToProps)(NavBar)

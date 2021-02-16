@@ -18,6 +18,7 @@ const AboutPage = ({ siteIsReady, atTop }) => {
           rawMarkdownBody
           frontmatter {
             about_heading
+            about_btn
             about_image {
               childImageSharp {
                 fluid(maxWidth: 2000, maxHeight: 700, quality: 80) {
@@ -34,6 +35,7 @@ const AboutPage = ({ siteIsReady, atTop }) => {
   const img =
     data.file.childMarkdownRemark.frontmatter.about_image.childImageSharp.fluid
   const heading = data.file.childMarkdownRemark.frontmatter.about_heading
+  const btnText = data.file.childMarkdownRemark.frontmatter.about_btn
   const body = data.file.childMarkdownRemark.rawMarkdownBody
 
   const renderers = {
@@ -58,7 +60,7 @@ const AboutPage = ({ siteIsReady, atTop }) => {
               <ReactMarkdown renderers={renderers}>{body}</ReactMarkdown>
               <Box align="center">
                 <Button component={Link} to="/contact">
-                  Link to contact
+                  {btnText}
                 </Button>
               </Box>
             </Container>

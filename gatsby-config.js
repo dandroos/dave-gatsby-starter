@@ -2,9 +2,8 @@ const { primary, secondary } = require("./src/colors")
 
 module.exports = {
   siteMetadata: {
-    title: `Dandroos' Starter`,
-    description: `A basic boilerplate starter with Redux and Material-UI`,
-    author: `@gatsbyjs`,
+    title: `Dave's Starter`,
+    description: `My boilerplate for Gatsby projects`,
     url: `https://dandroos-starter.netlify.app`,
   },
   plugins: [
