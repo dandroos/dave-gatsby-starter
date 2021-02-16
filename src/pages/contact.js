@@ -63,13 +63,13 @@ const ContactPage = ({ siteIsReady }) => {
   const [fields, setFields] = useState({
     name: "",
     email: "",
-    tel: "",
+    phone: "",
     msg: "",
   })
 
   const [toast, setToast] = useState({
     open: false,
-    msg: "",
+    message: "",
     severity: "success",
   })
 
@@ -108,7 +108,7 @@ const ContactPage = ({ siteIsReady }) => {
           name: "",
           email: "",
           phone: "",
-          msg: "",
+          message: "",
         })
         //set message})
       })
@@ -136,6 +136,20 @@ const ContactPage = ({ siteIsReady }) => {
   return (
     <>
       <SEO title="Contact" />
+      <form
+        action="#"
+        hidden
+        name="contact"
+        action="#"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+      >
+        <input name="name" />
+        <input name="email" />
+        <input name="phone" />
+        <input name="message" />
+      </form>
       {siteIsReady ? (
         <>
           <Toolbar />
@@ -214,7 +228,7 @@ const ContactPage = ({ siteIsReady }) => {
                       fullWidth
                       label="Phone"
                       name="phone"
-                      id="tel"
+                      id="phone"
                       onChange={handleChange}
                       value={fields.tel}
                     />
@@ -226,14 +240,14 @@ const ContactPage = ({ siteIsReady }) => {
                       required
                       label="Message"
                       name="message"
-                      id="msg"
+                      id="message"
                       onChange={handleChange}
-                      value={fields.msg}
+                      value={fields.message}
                     />
                   </Grid>
                 </Grid>
                 <Box mt={2} align="center">
-                  <Button component="button" type="submit" fullWidth>
+                  <Button type="submit" fullWidth>
                     Send
                   </Button>
                 </Box>
