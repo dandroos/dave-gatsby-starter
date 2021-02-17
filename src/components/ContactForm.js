@@ -133,7 +133,7 @@ const ContactForm = () => {
               name="phone"
               id="phone"
               onChange={handleChange}
-              value={fields.tel}
+              value={fields.phone}
             />
           </Grid>
           <Grid item xs={12}>

@@ -152,7 +152,7 @@ export const homeQuery = graphql`
       }
     }
     static: file(
-      name: { eq: "blog" }
+      name: { eq: "blog_page" }
       sourceInstanceName: { eq: "content" }
       extension: { eq: "md" }
     ) {

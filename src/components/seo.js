@@ -29,7 +29,13 @@ function SEO({ description, lang, meta, title, ogImage }) {
         lang,
       }}
       title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : null}
+      titleTemplate={
+        defaultTitle
+          ? title === "Home"
+            ? defaultTitle
+            : `%s | ${defaultTitle}`
+          : null
+      }
       meta={[
         {
           name: `description`,

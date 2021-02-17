@@ -10,7 +10,7 @@ const AboutPage = ({ siteIsReady, atTop }) => {
   const data = useStaticQuery(graphql`
     {
       file(
-        name: { eq: "about" }
+        name: { eq: "about_page" }
         extension: { eq: "md" }
         sourceInstanceName: { eq: "content" }
       ) {

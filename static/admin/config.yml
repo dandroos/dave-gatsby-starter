@@ -36,7 +36,7 @@ collections:
       name: "about_page"
       editor:
         preview: false
-      file: "content/about.md"
+      file: "content/about_page.md"
       fields:
         - { label: "Main image", name: about_image, widget: image }
         - { label: "Heading", name: about_heading, widget: string }
@@ -46,7 +46,7 @@ collections:
       name: "blog_page"
       editor:
         preview: false
-      file: "content/blog.md"
+      file: "content/blog_page.md"
       fields:
         - { label: "Heading", name: blog_heading, widget: string }
         - { label: "Blog introduction text", name: body, widget: markdown }
