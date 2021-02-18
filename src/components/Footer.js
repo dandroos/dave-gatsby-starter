@@ -6,9 +6,20 @@ import FooterNavigation from "./FooterNavigation"
 import FooterContact from "./FooterContact"
 import FooterMailingList from "./FooterMailingList"
 import FooterLegal from "./FooterLegal"
+import { useStaticQuery, graphql } from "gatsby"
 
 const Footer = ({ isMobile }) => {
   const theme = useTheme()
+
+  const data = useStaticQuery(graphql`
+    {
+      site {
+        siteMetadata {
+          title
+        }
+      }
+    }
+  `)
   return (
     <Box
       mt={7}
@@ -20,13 +31,13 @@ const Footer = ({ isMobile }) => {
       {isMobile ? (
         <>
           <Box align="center">
-            <FooterSection title="Mailing List">
-              <FooterMailingList />
+            <FooterSection title={data.site.siteMetadata.title}>
+              <FooterNavigation />
             </FooterSection>
           </Box>
           <Box mt={3}>
-            <FooterSection title="Navigation">
-              <FooterNavigation />
+            <FooterSection title="Mailing List">
+              <FooterMailingList />
             </FooterSection>
           </Box>
           <Box mt={3}>
@@ -49,7 +60,10 @@ const Footer = ({ isMobile }) => {
               </FooterSection>
             </Grid>
             <Grid item xs={4}>
-              <FooterSection title="Navigation" align="center">
+              <FooterSection
+                title={data.site.siteMetadata.title}
+                align="center"
+              >
                 <FooterNavigation />
               </FooterSection>
             </Grid>

@@ -5,6 +5,7 @@ import SEO from "../components/seo"
 import Img from "gatsby-image"
 import { Box, Container, Typography, Button, Toolbar } from "@material-ui/core"
 import ReactMarkdown from "react-markdown"
+import { Phone } from "mdi-material-ui"
 
 const AboutPage = ({ siteIsReady, atTop }) => {
   const data = useStaticQuery(graphql`
@@ -59,7 +60,7 @@ const AboutPage = ({ siteIsReady, atTop }) => {
               </Typography>
               <ReactMarkdown renderers={renderers}>{body}</ReactMarkdown>
               <Box align="center">
-                <Button component={Link} to="/contact">
+                <Button component={Link} startIcon={<Phone />} to="/contact">
                   {btnText}
                 </Button>
               </Box>

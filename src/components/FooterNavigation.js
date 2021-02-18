@@ -35,7 +35,13 @@ const FooterNavigation = ({ isMobile }) => {
     <Box>
       {internal.map((i, ind) => (
         <Box key={ind} display="inline">
-          <Button size="small" variant="text" component={Link} to={i.link}>
+          <Button
+            size="small"
+            variant="text"
+            component={Link}
+            to={i.link}
+            activeStyle={{ fontWeight: "bold" }}
+          >
             {i.label}
           </Button>
           <Typography display="inline">
@@ -67,7 +73,12 @@ const FooterNavigation = ({ isMobile }) => {
           style={{ cursor: "pointer" }}
           paragraph
         >
-          <MLink component={Link} to={i.link} color="secondary">
+          <MLink
+            component={Link}
+            to={i.link}
+            color="secondary"
+            activeStyle={{ fontWeight: "bold" }}
+          >
             {i.label}
           </MLink>
         </Typography>

@@ -11,6 +11,7 @@ import {
   Fab,
   Slide,
   Button,
+  Typography,
 } from "@material-ui/core"
 import { Facebook, Twitter, Instagram, Close, Share } from "mdi-material-ui"
 import { internal } from "../navigation-config"
@@ -31,9 +32,16 @@ const MobileMenu = ({ dispatch, isOpen }) => {
           }
         }
       }
+      site {
+        siteMetadata {
+          title
+        }
+      }
     }
   `)
   const socialLinks = data.file.childMarkdownRemark.frontmatter
+  const { title } = data.site.siteMetadata
+
   const handleClose = () => {
     dispatch(setShowMobileMenu(false))
   }
@@ -58,7 +66,8 @@ const MobileMenu = ({ dispatch, isOpen }) => {
         >
           <Close />
         </Fab>
-        <List>
+        <Typography variant="h2">{title}</Typography>
+        <List style={{ width: "100%" }}>
           {internal.map((i, ind) => (
             <ListItem
               key={ind}
@@ -66,10 +75,15 @@ const MobileMenu = ({ dispatch, isOpen }) => {
               to={i.link}
               button
               onClick={handleClose}
+              activeStyle={{ fontWeight: "bold" }}
             >
               <ListItemText
                 primary={i.label}
-                primaryTypographyProps={{ variant: "button", align: "center" }}
+                primaryTypographyProps={{
+                  variant: "button",
+                  align: "center",
+                  style: { fontWeight: "inherit" },
+                }}
               />
             </ListItem>
           ))}

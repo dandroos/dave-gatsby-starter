@@ -1,7 +1,7 @@
 import React from "react"
 import { Typography, Box, Grid, Button, makeStyles } from "@material-ui/core"
 import { useStaticQuery, graphql } from "gatsby"
-import { Phone, Whatsapp, FacebookMessenger } from "mdi-material-ui"
+import { Phone, Whatsapp, FacebookMessenger, Email } from "mdi-material-ui"
 
 const useStyles = makeStyles(theme => ({
   iconButtonLabel: {
@@ -22,6 +22,7 @@ const ContactButtons = () => {
           frontmatter {
             phone
             facebook
+            email
           }
         }
       }
@@ -56,25 +57,32 @@ const ContactButtons = () => {
       <Typography>{contactPageText.contact_btns_intro}</Typography>
       <Box my={2}>
         <Grid container spacing={1}>
-          <Grid item xs={4}>
+          <Grid item xs={6} sm={3}>
             <ContactMethod
               label="Call"
               Icon={Phone}
               link={`tel:${contactDetails.phone.replace(/ /g, "")}`}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6} sm={3}>
             <ContactMethod
               label="WhatsApp"
               Icon={Whatsapp}
               link={`https://wa.me/${contactDetails.phone.replace(/ /g, "")}`}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6} sm={3}>
             <ContactMethod
               label="Messenger"
               Icon={FacebookMessenger}
               link={`https:/m.me/${contactDetails.facebook}`}
+            />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <ContactMethod
+              label="Email"
+              Icon={Email}
+              link={`mailto:${contactDetails.email}`}
             />
           </Grid>
         </Grid>
